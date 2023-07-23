@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Document</title>
+    <style>
+        *{
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+        .is_wrapper{
+            width: 300px;
+            height: 250px;
+            background-image: url(bg.jpg);
+            position: relative;
+            overflow: hidden;
+        }
+        .slide-2
+        {
+            position: relative;
+            
+        }
+        .footer{
+            position: absolute;
+            bottom: 0;
+            left: 0;
+        }
+        .cement{
+            position: absolute;
+            bottom: 20px;
+            z-index: 1;
+            cursor: e-resize;
+        }
+        @keyframes cement_animation {
+            0%,100%{
+                transform: scale(1.05);
+            }
+           
+            50%{
+                transform: scale(1.1);
+            }
+        }
+        .cement_animation{
+            animation: .8s infinite cement_animation;
+        }
+        .sign{
+            position: absolute;
+            top: 62px;
+            left: 98px;
+
+        }
+
+        @keyframes sign_animation {
+            0%, 100%{
+                top: 62px;
+                left: 98px;
+            }
+            50%{
+                top: 62px;
+                left: 90px;
+            }
+        }
+        .sign_animation{
+            animation: 1s infinite sign_animation;
+        }
+        .text-1{
+            position: absolute;
+            left: 159px;
+            top: 76px;
+        }
+        .bridge{
+            position: absolute;
+            bottom: -116px;
+            
+            
+        }
+        @keyframes bridge_animation {
+            0%{
+                bottom: -116px;  
+            }
+            50%{
+                bottom: 0px;   
+            }
+            100%{
+                bottom: -116px;  
+            }
+        }
+        .bridge_animation{
+            animation: 2s bridge_animation;
+        }
+        .d-none{
+            display: none;
+        }
+        .text-3{
+            position: absolute;
+            top: 57px;
+            left: 13px;
+
+        }
+        .boshundhara{
+            position: absolute;
+            top: 120px;
+            left: 13px;
+        }
+        .cement-box{
+            top: 111px;
+            position: absolute;
+            left: 111px;
+            z-index: 1;
+        }
+        @keyframes cement-box-animation {
+            0%,100%{
+                transform: scale(.93);
+            }
+            50%{
+                transform: scale(1);
+            }
+            
+        }
+        .cement-box-animation{
+            animation: 2s infinite cement-box-animation;
+        }
+        
+
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+                visibility: hidden;
+            }
+            
+            100% {
+                opacity: 1;
+                visibility: visible;
+            }
+        }
+        .fadeIn {
+            animation: 2s fadeIn ;
+            
+        }
+        @keyframes fadeOut {
+            0% {
+                opacity: 1;
+                visibility: visible;
+            }
+           
+            100% {
+                opacity: 0;
+                visibility: hidden;
+            }
+        }
+        .fadeOut {
+            animation: 2s fadeOut;
+        }
+    </style>
+</head>
+<body>
+    <div class="is_wrapper" id="wrapper">
+        
+       
+            <img src="cement.png" class="cement cement_animation" draggable="true" id="draggable-elem">
+            <img src="sign.png" class="sign sign_animation">
+            <img src="text-1.png" class="text-1">
+         
+        <img src="bridge.png" class="bridge bridge_animation d-none">
+        <div class="slide-2 d-none">
+            <img src="text-3.png" class="text-3  ">
+            <img src="boshundhara.png" class="boshundhara ">
+            <img src="cement-box.png" class="cement-box cement-box-animation ">
+            
+        </div>
+        
+        <img src="footer.png" class="footer">
+       
+    </div>
+
+    <script>
+
+        let slide_1 =document.querySelector('.slide-1');
+        let slide_2 =document.querySelector('.slide-2');
+        let sign = document.querySelector('.sign');
+        let text_1 = document.querySelector('.text-1');
+        let bridge = document.querySelector('.bridge');
+        let cement = document.querySelector('.cement');
+        let text_3 = document.querySelector('.text-3');
+        let bosu = document.querySelector('.boshundhara');
+        let c_box = document.querySelector('.cement-box');
+
+        let cement1=document.getElementById('draggable-elem');
+        let wrapper = document.getElementById('wrapper');
+
+        
+
+                    initialX = 0,
+                    initialY = 0,
+                    moveElement = !1,
+                    events = { mouse: { down: "mousedown", move: "mousemove", up: "mouseup" }, touch: { down: "touchstart", move: "touchmove", up: "touchend" } },
+                    deviceType = "mouse";
+                const isTouchDevice = () => {
+                    try {
+                        return document.createEvent("TouchEvent"), (deviceType = "touch"), !0;
+                    } catch (e) {
+                        return (deviceType = "mouse"), !1;
+                    }
+                };
+                isTouchDevice(),
+                    cement1.addEventListener(events[deviceType].down, (e) => {
+                        e.preventDefault(), (initialX = isTouchDevice() ? e.touches[0].clientX : e.clientX), (initialY = isTouchDevice() ? e.touches[0].clientY : e.clientY), (moveElement = !0);
+                    }),
+                    cement1.addEventListener(events[deviceType].move, (e) => {
+                        if (moveElement) {
+                            e.preventDefault();
+                            add_class(sign,"d-none");
+                            let t = isTouchDevice() ? e.touches[0].clientX : e.clientX,
+                                a = isTouchDevice() ? e.touches[0].clientY : e.clientY;
+                            let x = cement1.style.left = cement1.offsetLeft - (initialX - t) + "px"; (initialX = t);
+
+                            if(x == 126 + 'px'){
+                                setTimeout(()=>{
+                            add_class(text_1, 'fadeOut');
+                            add_class(text_1, 'd-none');
+                            add_class(cement, 'animate__fadeOut');
+                            add_class(cement, 'd-none');
+                            remove_class(bridge,'d-none');
+                         },50);
+
+                        setTimeout(()=>{
+                            remove_class(slide_2, 'd-none');
+                            add_class(slide_2, 'fadeIn');
+                            add_class(slide_1,'d-none')
+           
+            
+                            },1300);
+
+                            }
+                        }
+                    }),
+                    cement1.addEventListener(
+                        events[deviceType].up,
+                        (stopMovement = (e) => {
+                            moveElement = !1;
+                        })
+                    ),
+                    cement1.addEventListener("mouseleave", stopMovement),
+                    cement1.addEventListener(events[deviceType].up, (e) => {
+                        moveElement = !1;
+                        e.preventDefault()
+                       
+                    })
+
+        
+
+        function remove_class(element, classname,newclass='') {
+                    element.className = element.className.replace(classname, newclass);
+                }
+        function add_class(element, classname) {
+                    element.classList ? element.classList.add(classname) : element.className += (' ' + classname);
+                }
+
+    </script>
+</body>
+</html>
